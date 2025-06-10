@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dark Web Portal</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #0d0d0d;
+      color: #00ffcc;
+      font-family: 'Courier New', Courier, monospace;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #login-container, #loading-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+      border: 2px solid #00ffcc;
+      border-radius: 10px;
+      background-color: #1a1a1a;
+      max-width: 400px;
+      width: 90%;
+    }
+
+    #login-container.active {
+      display: flex;
+    }
+
+    #loading-container.active {
+      display: flex;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #000;
+      border: 1px solid #00ffcc;
+      color: #00ffcc;
+      font-size: 16px;
+    }
+
+    input[readonly] {
+      cursor: not-allowed;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #00ffcc;
+      border: none;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .fullscreen-button {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #00ffcc;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .loading-text {
+      font-size: 18px;
+      margin-bottom: 20px;
+      height: 30px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      background-color: #333;
+      height: 15px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      width: 0%;
+      background-color: #00ffcc;
+      transition: width 0.2s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div id="login-container" class="active">
+    <h1>Access DarkNet</h1>
+    <div class="input-group">
+      <label>Username</label>
+      <input type="text" value="Money Guy7" readonly />
+    </div>
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" id="password-input" placeholder="Enter password" />
+    </div>
+    <button onclick="login()">Sign In</button>
+    <button class="fullscreen-button" onclick="enterFullscreen()">Enter Fullscreen</button>
+  </div>
+
+  <div id="loading-container">
+    <div class="loading-text" id="loading-text">Establishing Secure Connection...</div>
+    <div class="progress-bar">
+      <div class="progress" id="progress"></div>
+    </div>
+  </div>
+
+  <script>
+    function enterFullscreen() {
+      const el = document.documentElement;
+      if (el.requestFullscreen) {
+        el.requestFullscreen();
+      } else if (el.webkitRequestFullscreen) {
+        el.webkitRequestFullscreen();
+      } else if (el.msRequestFullscreen) {
+        el.msRequestFullscreen();
+      }
+    }
+
+    function login() {
+      document.getElementById('login-container').classList.remove('active');
+      document.getElementById('loading-container').classList.add('active');
+      simulateLoading();
+    }
+
+    document.getElementById('password-input').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        login();
+      }
+    });
+
+    function simulateLoading() {
+      const messages = [
+        "Establishing Secure Connection...",
+        "Fetching Encrypted Data...",
+        "Decrypting Payload...",
+        "Connection Secured."
+      ];
+
+      let i = 0;
+      let progress = 0;
+      const progressBar = document.getElementById("progress");
+      const loadingText = document.getElementById("loading-text");
+
+      const interval = setInterval(() => {
+        progress += 2 + Math.random() * 5;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(interval);
+          loadingText.textContent = "Access Granted. Welcome.";
+        } else {
+          if (progress > 25 && i < 1) i = 1;
+          if (progress > 50 && i < 2) i = 2;
+          if (progress > 80 && i < 3) i = 3;
+          loadingText.textContent = messages[i];
+        }
+        progressBar.style.width = progress + "%";
+      }, 150);
+    }
+  </script>
+</body>
+</html>
