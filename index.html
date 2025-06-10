@@ -191,3 +191,38 @@
   </script>
 </body>
 </html>
+function simulateLoading() {
+  const messages = [
+    "Establishing Secure Connection...",
+    "Fetching Encrypted Data...",
+    "Decrypting Payload...",
+    "Connection Secured.",
+    "Access Granted. Welcome."
+  ];
+
+  let i = 0;
+  let progress = 0;
+  const progressBar = document.getElementById("progress");
+  const loadingText = document.getElementById("loading-text");
+
+  const interval = setInterval(() => {
+    const nextProgress = progress + 1 + Math.random() * 2;
+    progress = Math.min(nextProgress, 94); // never reach 100%
+    progressBar.style.width = progress + "%";
+
+    if (progress > 15 && i < 1) i = 1;
+    if (progress > 35 && i < 2) i = 2;
+    if (progress > 55 && i < 3) i = 3;
+    if (progress > 75 && i < 4) i = 4;
+
+    loadingText.textContent = messages[i];
+
+    if (progress >= 94) {
+      clearInterval(interval);
+      setTimeout(() => {
+        loadingText.textContent = messages[4]; // final message stays
+      }, 500);
+    }
+  }, 300);
+}
+
